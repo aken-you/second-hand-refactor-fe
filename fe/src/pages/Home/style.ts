@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { PALETTE } from '@styles/color';
 
 import Button from '@components/common/Button';
 
@@ -23,13 +22,13 @@ const GoToTopButton = styled.button`
   border-radius: 56px;
   background-color: #e5e5e5;
 
-  &: hover {
+  &:hover {
     background-color: ${({ theme }) => theme.colors.accent.background.primary};
-  };
+  }
 
   & > svg {
     fill: ${({ theme }) => theme.colors.accent.text.default};
-  };
+  }
 `;
 
 const NewProductButton = styled(Button)`
