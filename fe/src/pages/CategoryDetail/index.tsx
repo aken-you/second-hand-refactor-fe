@@ -7,8 +7,9 @@ import useFetch, { REQUEST_METHOD } from '@hooks/useFetch';
 
 import Icon from '@components/common/Icon';
 import ProductList from '@components/ProductList';
-import * as S from './style';
 import Layout from '@components/common/Layout';
+import MainLayout from '@components/common/MainLayout';
+import * as S from './style';
 
 interface Region {
   id: number;
@@ -52,9 +53,9 @@ const CategoryDetail = () => {
         <S.EmptyTag></S.EmptyTag>
       </S.Header>
 
-      <S.ProductListLayout ref={listRef}>
+      <MainLayout ref={listRef}>
         {regionsData && <ProductList regionId={regionsData?.regions[0].id} categoryId={Number(idParams)} />}
-      </S.ProductListLayout>
+      </MainLayout>
 
       <S.GoToTopButton onClick={goToTopHandler}>
         <Icon name={ICON_NAME.ARROW_UP} />

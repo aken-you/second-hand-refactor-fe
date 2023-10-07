@@ -36,11 +36,6 @@ const EmptyTag = styled.div`
   width: 100px;
 `;
 
-const ProductListLayout = styled.div`
-  height: calc(100vh - 48px);
-  overflow-y: scroll;
-`;
-
 const GoToTopButton = styled.button`
   position: fixed;
   bottom: 18px;
@@ -58,4 +53,4 @@ const GoToTopButton = styled.button`
   }
 `;
 
-export { Header, BackButton, HeaderTitle, EmptyTag, ProductListLayout, GoToTopButton };
+export { Header, BackButton, HeaderTitle, EmptyTag, GoToTopButton };
