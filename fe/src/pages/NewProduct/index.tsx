@@ -12,7 +12,6 @@ import TitleInput from '@components/TitleInput';
 import CategoryList from '@components/CategoryList';
 import ModalPortal from '@components/ModalPortal';
 import * as S from './style';
-import Layout from '@components/common/Layout';
 
 export interface Category {
   id: number;
@@ -141,7 +140,7 @@ const NewProduct = () => {
   };
 
   return (
-    <Layout>
+    <>
       {isOpenCategory && (
         <ModalPortal>
           <CategoryList
@@ -179,10 +178,10 @@ const NewProduct = () => {
           <span>{currentRegion}</span>
         </S.RegionSettingButton>
         <S.Keyboard>
-          <Icon name={ICON_NAME.KEYBOARD} fill="black" size={20}/>
+          <Icon name={ICON_NAME.KEYBOARD} fill="black" size={20} />
         </S.Keyboard>
       </S.TabBar>
-    </Layout>
+    </>
   );
 };
 
