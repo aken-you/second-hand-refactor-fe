@@ -23,7 +23,7 @@ interface RegionsData {
 
 const Home = () => {
   const [userRegions, setUserRegions] = useState<Region[]>([]);
-  const listRef = useRef<HTMLDivElement | null>(null);
+  const listRef = useRef<HTMLElement>(null);
   const token = localStorage.getItem('Token');
   const SELECTED_REGION_IDX = 0;
 
@@ -57,9 +57,9 @@ const Home = () => {
       {userRegions.length > 0 && (
         <>
           <Header type="home" regions={userRegions} changeUserRegions={setUserRegions} />
-          <S.ProductListLayout ref={listRef}>
+          <S.Main top={'48px'} bottom={'65px'} ref={listRef}>
             <ProductList regionId={userRegions[SELECTED_REGION_IDX].id} />
-          </S.ProductListLayout>
+          </S.Main>
         </>
       )}
 

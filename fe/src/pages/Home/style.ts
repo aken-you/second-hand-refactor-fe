@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import Button from '@components/common/Button';
+import MainLayout from '@components/common/MainLayout';
 
 const Layout = styled.div`
   max-width: 393px;
@@ -38,21 +39,8 @@ const NewProductButton = styled(Button)`
   right: 24px;
 `;
 
-const ProductListLayout = styled.div`
-  margin-bottom: 65px;
-  height: calc(100vh - 48px - 65px);
-  overflow-y: scroll;
-
+const Main = styled(MainLayout)`
   background-color: ${({ theme }) => theme.colors.neutral.background.default};
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.accent.background.primary};
-    border-radius: 12px;
-  }
 `;
 
-export { Layout, GoToTopButton, NewProductButton, ProductListLayout };
+export { Layout, GoToTopButton, NewProductButton, Main };
