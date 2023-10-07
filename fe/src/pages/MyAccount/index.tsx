@@ -2,7 +2,6 @@ import { useUserContext } from '@context/userContext';
 
 import TabBar from '@components/TabBar';
 import * as S from './style';
-import Layout from '@components/common/Layout';
 
 const MyAccount = () => {
   const CLIENT_ID =
@@ -24,7 +23,7 @@ const MyAccount = () => {
   };
 
   return (
-    <Layout>
+    <>
       <S.Header>내 계정</S.Header>
       {isLoggedIn ? (
         <S.MyAccountMain isloggedin={isLoggedIn ? 1 : 0}>
@@ -40,7 +39,7 @@ const MyAccount = () => {
         </S.MyAccountMain>
       )}
       <TabBar activeTab="myAccount" />
-    </Layout>
+    </>
   );
 };
 

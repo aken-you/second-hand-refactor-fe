@@ -5,7 +5,6 @@ import { ICON_NAME, PATH, REQUEST_URL } from '@constants/index';
 import useFetch, { REQUEST_METHOD, RESPONSE_STATE } from '@hooks/useFetch';
 
 import Icon from '@components/common/Icon';
-import Layout from '@components/common/Layout';
 import MainLayout from '@components/common/MainLayout';
 import * as S from './style';
 
@@ -33,7 +32,7 @@ const Category = () => {
   });
 
   return (
-    <Layout>
+    <>
       <S.Header>
         <Link to={PATH.HOME}>
           <S.BackButton>
@@ -61,7 +60,7 @@ const Category = () => {
           </S.CategoryList>
         )}
       </MainLayout>
-    </Layout>
+    </>
   );
 };
 
