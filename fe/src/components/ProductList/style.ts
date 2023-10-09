@@ -1,8 +1,13 @@
 import styled from 'styled-components';
+import MainLayout from '@components/common/MainLayout';
 
 const ProductList = styled.div`
-  height: 100%;
+  height: fit-content;
   padding: 0 16px;
+`;
+
+const Main = styled(MainLayout)`
+  background-color: ${({ theme }) => theme.colors.neutral.background.default};
 `;
 
 const Target = styled.div`
@@ -27,4 +32,4 @@ const ProductNotFound = styled.div`
   color: ${({ theme }) => theme.colors.neutral.text.strong};
 `;
 
-export { ProductList, Target, SpinnerLayout, ProductNotFound };
+export { ProductList, Main, Target, SpinnerLayout, ProductNotFound };
