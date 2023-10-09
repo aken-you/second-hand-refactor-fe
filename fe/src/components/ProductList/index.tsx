@@ -1,8 +1,9 @@
-import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { REQUEST_URL } from '@constants/requestUrl';
 
 import { REQUEST_METHOD } from '@hooks/useFetch';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
+import useForwardRef from '@hooks/useForwardRef';
 
 import Spinner from '@components/common/Spinner';
 import ProductListItem, { ProductListItemProps } from '@components/ProductListItem';
@@ -26,7 +27,7 @@ const ProductList = forwardRef<HTMLElement, ProductListProps>(({ regionId, categ
   const [pageNum, setPageNum] = useState<number>(0);
   const [err, setErr] = useState<Error>();
 
-  const listRef = useRef<HTMLElement>(null);
+  const listRef = useForwardRef<HTMLElement>(ref);
 
   const loadMore = useCallback(async () => {
     setPageNum((num) => num + 1);
