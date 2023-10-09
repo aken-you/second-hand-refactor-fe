@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 interface UseIntersectionObserverProps {
   intersect: () => void;
-  root?: null;
+  root?: null | HTMLElement;
   rootMargin?: string;
   threshold?: number;
 }
