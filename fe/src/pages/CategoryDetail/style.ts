@@ -37,16 +37,22 @@ const EmptyTag = styled.div`
 `;
 
 const GoToTopButton = styled.button`
-  position: fixed;
-  bottom: 18px;
-  right: 18px;
+  position: absolute;
+  justify-content: center;
+
+  bottom: 24px;
+  right: 24px;
 
   width: 56px;
   height: 56px;
+  padding: 10px;
 
-  background-color: ${({ theme }) => theme.colors.accent.background.primary};
-  border: 1px solid ${({ theme }) => theme.colors.neutral.border.default};
   border-radius: 56px;
+  background-color: #e5e5e5;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.accent.background.primary};
+  }
 
   & > svg {
     fill: ${({ theme }) => theme.colors.accent.text.default};

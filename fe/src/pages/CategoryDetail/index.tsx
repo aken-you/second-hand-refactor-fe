@@ -7,7 +7,6 @@ import useForwardRef from '@hooks/useForwardRef';
 
 import Icon from '@components/common/Icon';
 import ProductList from '@components/ProductList';
-import MainLayout from '@components/common/MainLayout';
 import * as S from './style';
 
 interface Region {

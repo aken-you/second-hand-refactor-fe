@@ -56,7 +56,7 @@ const Home = () => {
       {userRegions.length > 0 && (
         <>
           <Header type="home" regions={userRegions} changeUserRegions={setUserRegions} />
-          <ProductList regionId={userRegions[SELECTED_REGION_IDX].id} ref={listRef} />
+          <ProductList regionId={userRegions[SELECTED_REGION_IDX].id} ref={listRef} bottom="65px" />
         </>
       )}
 
