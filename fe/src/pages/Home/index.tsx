@@ -7,8 +7,8 @@ import useFetch, { REQUEST_METHOD, RESPONSE_STATE } from '@hooks/useFetch';
 
 import Icon from '@components/common/Icon';
 import Header from '@components/common/Header';
-import ProductList from '@components/ProductList';
 import TabBar from '@components/TabBar';
+import ProductList from '@components/ProductList';
 import * as S from './style';
 
 interface Region {
@@ -56,9 +56,7 @@ const Home = () => {
       {userRegions.length > 0 && (
         <>
           <Header type="home" regions={userRegions} changeUserRegions={setUserRegions} />
-          <S.Main top={'48px'} bottom={'65px'} ref={listRef}>
-            <ProductList regionId={userRegions[SELECTED_REGION_IDX].id} />
-          </S.Main>
+          <ProductList regionId={userRegions[SELECTED_REGION_IDX].id} ref={listRef} bottom="65px" />
         </>
       )}
 

@@ -1,9 +1,9 @@
+import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { REQUEST_URL } from '@constants/requestUrl';
-import { CustomError } from '@utils/index';
 
 import { REQUEST_METHOD } from '@hooks/useFetch';
-import useInfiniteLoading from '@hooks/useInfiniteLoading';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
+import useForwardRef from '@hooks/useForwardRef';
 
 import Spinner from '@components/common/Spinner';
 import ProductListItem, { ProductListItemProps } from '@components/ProductListItem';
@@ -17,82 +17,97 @@ interface PostsData {
 interface ProductListProps {
   regionId: number;
   categoryId?: number;
+  bottom?: string;
 }
 
-interface ErrorResponse {
-  code: number;
-  message: string;
-}
+const ProductList = forwardRef<HTMLElement, ProductListProps>(
+  ({ regionId, categoryId, bottom = '0px' }, ref) => {
+    const [items, setItems] = useState<ProductListItemProps[]>([]);
+    const [isLast, setIsLast] = useState<boolean>(false);
 
-const getProductList = async ({
-  page,
-  regionId,
-  categoryId,
-}: {
-  page: number;
-  regionId: number;
-  categoryId?: number;
-}) => {
-  try {
-    const token = localStorage.getItem('Token');
-    const requestUrl = `${REQUEST_URL.POSTS}?page=${page}&size=10&region=${regionId}${
-      categoryId ? `&category=${categoryId}` : ''
-    }`;
+    const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
+    const [pageNum, setPageNum] = useState<number>(0);
+    const [err, setErr] = useState<Error>();
 
-    const response = await fetch(requestUrl, {
-      method: REQUEST_METHOD.GET,
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
+    const listRef = useForwardRef<HTMLElement>(ref);
 
-    if (!response.ok) {
-      const { code, message }: ErrorResponse = await response.json();
-      throw new CustomError(code, message);
+    const loadMore = useCallback(async () => {
+      setPageNum((num) => num + 1);
+    }, []);
+
+    const loading = status === 'loading';
+
+    useEffect(() => {
+      setItems([]);
+    }, [regionId]);
+
+    useEffect(() => {
+      let ignore = false;
+      const requestUrl = `${REQUEST_URL.POSTS}?${
+        categoryId
+          ? `page=${pageNum}&size=10&region=${regionId}&category=${categoryId}`
+          : `page=${pageNum}&size=10&region=${regionId}`
+      }`;
+      const token = localStorage.getItem('Token');
+      const options: RequestInit = {
+        method: REQUEST_METHOD.GET,
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      };
+
+      setStatus('loading');
+
+      fetch(requestUrl, options)
+        .then((res) => res.json())
+        .then(
+          ({ data }: { data: PostsData }) => {
+            if (ignore) return;
+
+            setStatus('success');
+            setItems((items) => [...items, ...data.posts.content]);
+            setIsLast(data.posts.last);
+          },
+          (error: Error) => {
+            setStatus('error');
+            setErr(error);
+          },
+        );
+
+      return () => {
+        ignore = true;
+      };
+    }, [pageNum, regionId, categoryId]);
+
+    if (status === 'error') {
+      throw err;
     }
-    const { data }: { data: PostsData } = await response.json();
 
-    return { items: data.posts.content, last: data.posts.last, error: null };
-  } catch (error) {
-    return { items: [], last: false, error: error as CustomError };
-  }
-};
+    const { setTarget } = useIntersectionObserver({
+      intersect: () => loadMore(),
+      root: listRef?.current,
+    });
+    const isEmpty = items.length === 0;
+    const ProductList = items.map((item) => <ProductListItem key={item.id} {...item} />);
 
-const ProductList = ({ regionId, categoryId }: ProductListProps) => {
-  const {
-    items: productList,
-    loading,
-    isLastPage,
-    loadItems,
-    error,
-  } = useInfiniteLoading<ProductListItemProps>({
-    getData: ({ page }) => getProductList({ page, regionId, categoryId }),
-  });
+    return (
+      <S.Main bottom={bottom} ref={listRef}>
+        {loading && isEmpty && <Loading text="상품을 불러오는 중입니다." />}
+        {!loading && isEmpty && <S.ProductNotFound>해당 상품이 없어요.</S.ProductNotFound>}
+        {!isEmpty && (
+          <>
+            <S.ProductList>{ProductList}</S.ProductList>
+            {loading && (
+              <S.SpinnerLayout>
+                <Spinner />
+              </S.SpinnerLayout>
+            )}
+          </>
+        )}
+        {!loading && !isEmpty && !isLast && <S.Target ref={setTarget}></S.Target>}
+      </S.Main>
+    );
+  },
+);
 
-  const { setTarget } = useIntersectionObserver({ intersect: () => loadItems() });
-
-  if (error) throw error;
-
-  const ProductListItems = productList.map((item) => <ProductListItem key={item.id} {...item} />);
-
-  return (
-    <S.ProductList>
-      {loading && productList.length === 0 && <Loading text="상품 목록을 불러오고 있습니다." />}
-      {loading && productList.length > 0 && (
-        <>
-          {ProductListItems}
-          <S.SpinnerLayout>
-            <Spinner />
-          </S.SpinnerLayout>
-        </>
-      )}
-      {!loading && productList.length === 0 && <S.ProductNotFound>해당 상품이 없어요.</S.ProductNotFound>}
-      {!loading && productList.length > 0 && (
-        <>
-          {ProductListItems}
-          {!isLastPage && <S.Target ref={setTarget}></S.Target>}
-        </>
-      )}
-    </S.ProductList>
-  );
-};
+ProductList.displayName = 'ProductList';
 
 export default ProductList;
